@@ -1,0 +1,132 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { products } from '../data/products';
+
+// Get featured products (first 4)
+const featuredProducts = products.slice(0, 4);
+---
+
+<Layout title="TechStore - Ecommerce Moderno">
+  <Header />
+  
+  <main>
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-primary-600 to-primary-700 text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="text-center">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6">
+            Bienvenido Nico
+          </h1>
+          <p class="text-xl md:text-2xl mb-8 text-primary-100">
+            Descubre los mejores productos tecnológicos al mejor precio
+          </p>
+          <a href="/productos" class="bg-white text-primary-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block">
+            Ver Productos
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center">
+            <div class="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Envío Gratis</h3>
+            <p class="text-gray-600">Envío gratuito en compras superiores a $100</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Garantía</h3>
+            <p class="text-gray-600">2 años de garantía en todos nuestros productos</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M12 2.18l.707-.707a1 1 0 011.414 0l.707.707M12 21.82l-.707.707a1 1 0 01-1.414 0l-.707-.707M2.18 12l-.707-.707a1 1 0 010-1.414l.707-.707M21.82 12l.707.707a1 1 0 010 1.414l-.707.707"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Soporte 24/7</h3>
+            <p class="text-gray-600">Atención al cliente las 24 horas del día</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Productos Destacados
+          </h2>
+          <p class="text-xl text-gray-600">
+            Descubre nuestra selección de productos más populares
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredProducts.map((product) => (
+            <ProductCard product={product} />
+          ))}
+        </div>
+        
+        <div class="text-center mt-12">
+          <a href="/productos" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block">
+            Ver Todos los Productos
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-primary-600">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-white mb-4">
+          Mantente actualizado
+        </h2>
+        <p class="text-xl text-primary-100 mb-8">
+          Suscríbete a nuestro newsletter para recibir las mejores ofertas
+        </p>
+        <div class="max-w-md mx-auto flex gap-4">
+          <input 
+            type="email" 
+            placeholder="Tu email" 
+            class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-white"
+          />
+          <button class="bg-white text-primary-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            Suscribirse
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h3 class="text-2xl font-bold mb-4">TechStore</h3>
+        <p class="text-gray-300">
+          Tu tienda de tecnología de confianza. Los mejores productos al mejor precio.
+        </p>
+        <div class="mt-8">
+          <p class="text-gray-400">&copy; 2024 TechStore. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</Layout> 

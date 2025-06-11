@@ -1,0 +1,113 @@
+---
+import type { Product } from '../data/products';
+
+export interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+
+<div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+  <div class="aspect-w-1 aspect-h-1 w-full overflow-hidden">
+    <img 
+      src={product.image} 
+      alt={product.name}
+      class="w-full h-48 object-cover object-center group-hover:opacity-75 transition-opacity"
+    />
+  </div>
+  
+  <div class="p-4">
+    <div class="flex justify-between items-start mb-2">
+      <h3 class="text-lg font-semibold text-gray-900 line-clamp-2">
+        {product.name}
+      </h3>
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+        {product.category}
+      </span>
+    </div>
+    
+    <p class="text-gray-600 text-sm mb-3 line-clamp-2">
+      {product.description}
+    </p>
+    
+    <div class="flex items-center justify-between">
+      <span class="text-2xl font-bold text-primary-600">
+        ${product.price.toFixed(2)}
+      </span>
+      
+      <button 
+        class="add-to-cart-btn bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+        data-product-id={product.id}
+        data-product-name={product.name}
+        data-product-price={product.price}
+        data-product-image={product.image}
+      >
+        Agregar al carrito
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Add to cart functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const target = e.target as HTMLButtonElement;
+        const productId = parseInt(target.dataset.productId || '0');
+        const productName = target.dataset.productName || '';
+        const productPrice = parseFloat(target.dataset.productPrice || '0');
+        const productImage = target.dataset.productImage || '';
+        
+        // Get existing cart from localStorage
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        
+        // Check if product already exists in cart
+        const existingProductIndex = cart.findIndex((item: any) => item.id === productId);
+        
+        if (existingProductIndex > -1) {
+          // Product exists, increment quantity
+          cart[existingProductIndex].quantity += 1;
+        } else {
+          // Product doesn't exist, add new item
+          cart.push({
+            id: productId,
+            name: productName,
+            price: productPrice,
+            image: productImage,
+            quantity: 1
+          });
+        }
+        
+        // Save updated cart to localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Dispatch custom event to update cart count
+        window.dispatchEvent(new CustomEvent('cart-updated'));
+        
+        // Visual feedback
+        target.textContent = '¡Agregado!';
+        target.classList.add('bg-green-600', 'hover:bg-green-700');
+        target.classList.remove('bg-primary-600', 'hover:bg-primary-700');
+        
+        setTimeout(() => {
+          target.textContent = 'Agregar al carrito';
+          target.classList.remove('bg-green-600', 'hover:bg-green-700');
+          target.classList.add('bg-primary-600', 'hover:bg-primary-700');
+        }, 1500);
+      });
+    });
+  });
+</script>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style> 
